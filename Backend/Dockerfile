@@ -23,6 +23,11 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY myown.yml /usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/custom
+COPY M1.yml  /usr/local/lib/python3.8/site-packages/chatterbot_corpus/data/custom
+
+
+
 # Copy all files from the current directory to the working directory in the container
 COPY . .
 
