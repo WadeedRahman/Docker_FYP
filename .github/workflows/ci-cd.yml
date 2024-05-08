@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build and Test Frontend
+        run: |
+          cd frontend
+          npm install
+          npm test
+          npm run build
+
+      - name: Build and Test Backend
+        run: |
+          cd backend
+          docker build -t backend .
+          docker run backend python -m pytest
+
+      - name: Build and Push Docker Images
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker build -t frontend ./frontend
+          docker build -t backend ./backend
+          docker tag frontend "${{ secrets.DOCKER_USERNAME }}/frontend:latest"
+          docker tag backend "${{ secrets.DOCKER_USERNAME }}/backend:latest"
+          docker push "${{ secrets.DOCKER_USERNAME }}/frontend:latest"
+          docker push "${{ secrets.DOCKER_USERNAME }}/backend:latest"
