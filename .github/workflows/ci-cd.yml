@@ -17,7 +17,7 @@ jobs:
         run: |
           cd React2/myapp
           npm install
-          npm test
+          npm run test
           npm run build
 
       - name: Build and Test Backend
@@ -26,8 +26,9 @@ jobs:
           docker build -t backend .
           docker run backend python -m pytest
 
-      - name: Build and Push Docker Images
+      - name: Build and Push Frontend Docker Image
         run: |
+          cd React2/myapp
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker build -t frontend .
           docker tag frontend "${{ secrets.DOCKER_USERNAME }}/frontend:latest"
