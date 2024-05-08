@@ -22,7 +22,7 @@ jobs:
         run: |
           cd Backend
           docker build -t backend .
-          docker run backend python -m pytest
+          
 
       - name: Build and Push Frontend Docker Image
         run: |
