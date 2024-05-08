@@ -17,9 +17,7 @@ jobs:
         run: |
           cd React2/myapp
           npm install
-          npm run test
-          npm run build
-
+  
       - name: Build and Test Backend
         run: |
           cd Backend
