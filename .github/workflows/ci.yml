@@ -48,10 +48,10 @@ jobs:
 
     - name: Push Docker images to Docker Hub
       run: |
-        docker tag your-frontend-image-name:latest your-dockerhub-username/your-frontend-image-name:latest
-        docker tag your-backend-image-name:latest your-dockerhub-username/your-backend-image-name:latest
-        docker push your-dockerhub-username/your-frontend-image-name:latest
-        docker push your-dockerhub-username/your-backend-image-name:latest
+        docker tag fyp_devops_practice_frontend:latest wadeed/fyp_devops_practice_frontend:latest
+        docker tag fyp_devops_practice_backend:latest wadeed/fyp_devops_practice_backend:latest
+        docker push wadeed/fyp_devops_practice_frontend:latest
+        docker push wadeed/fyp_devops_practice_backend:latest
 
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
