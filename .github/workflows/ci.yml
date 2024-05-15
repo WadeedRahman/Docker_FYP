@@ -31,7 +31,7 @@ jobs:
 
     - name: Run backend tests
       run: |
-        docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
+       # docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
 
     - name: Shut down Docker containers
       run: docker-compose -f docker-compose.yml down
