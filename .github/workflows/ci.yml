@@ -25,12 +25,13 @@ jobs:
     - name: Run Docker containers
       run: docker-compose -f docker-compose.yml up -d
 
-    - name: Run tests
+    - name: Run frontend tests
       run: |
-        # Run tests for frontend
-        docker exec -w /frontend/app docker_fyp_frontend_1 npm test
-        # Run tests for backend
-        docker exec -w /backend/app docker_fyp_backend_1 pytest
+        docker exec docker_fyp_frontend_1 npm test --prefix /app/frontend
+
+    - name: Run backend tests
+      run: |
+        docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
 
     - name: Shut down Docker containers
       run: docker-compose -f docker-compose.yml down
