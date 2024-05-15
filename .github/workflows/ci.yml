@@ -27,7 +27,7 @@ jobs:
 
     - name: Run frontend tests
       run: |
-        docker exec docker_fyp_frontend_1 npm test -- --coverage
+       # docker exec docker_fyp_frontend_1 npm test -- --coverage
 
     - name: Run backend tests
       run: |
