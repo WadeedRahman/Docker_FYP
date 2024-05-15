@@ -29,9 +29,9 @@ jobs:
       run: |
         # Add your test commands here
         # Example: Run tests for frontend
-        docker exec -w /path/to/frontend container_name npm test
+        docker exec -w /React2/myapp frontend npm test
         # Example: Run tests for backend
-        docker exec -w /path/to/backend container_name npm test
+        docker exec -w /Backend Backend pytest
 
     - name: Shut down Docker containers
       run: docker-compose -f docker-compose.yml down
