@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker images
+      run: docker-compose -f docker-compose.yml build
+
+    - name: Run Docker containers
+      run: docker-compose -f docker-compose.yml up -d
+
+    - name: Run tests
+      run: |
+        # Add your test commands here
+        # Example: Run tests for frontend
+        docker exec -w /path/to/frontend container_name npm test
+        # Example: Run tests for backend
+        docker exec -w /path/to/backend container_name npm test
+
+    - name: Shut down Docker containers
+      run: docker-compose -f docker-compose.yml down
+
