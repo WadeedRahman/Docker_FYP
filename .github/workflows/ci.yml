@@ -60,6 +60,11 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
+    - name: Push Docker images to Docker Hub
+      run: |
+        docker push wadeed/fyp_1:frontend
+        docker push wadeed/fyp_1:backend
+
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
       with:
