@@ -48,13 +48,13 @@ jobs:
 
     - name: Tag Docker images
       run: |
-        docker tag frontend wadeed/fyp_1:frontend
-        docker tag backend wadeed/fyp_1:backend
+        docker tag frontend wadeed/fyp_1:tagname
+        docker tag backend wadeed/fyp_1:tagname
 
     - name: Push Docker images to Docker Hub
       run: |
-        docker push wadeed/fyp_1:frontend
-        docker push wadeed/fyp_1:backend
+        docker push wadeed/fyp_1:tagname frontend
+        docker push wadeed/fyp_1:tagname backend
 
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
