@@ -55,8 +55,8 @@ jobs:
     - name: Tag and Push Docker images to Docker Hub
       run: |
         # Tag the images
-        docker tag fyp_devops_practice_frontend:latest wadeed/fyp_1:frontend-latest
-        docker tag fyp_devops_practice_backend:latest wadeed/fyp_1:backend-latest
+        docker tag frontend:latest wadeed/fyp_1:frontend-latest
+        docker tag backend:latest wadeed/fyp_1:backend-latest
         
         # Push the images to Docker Hub
         docker push wadeed/fyp_1:frontend-latest
