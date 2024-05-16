@@ -34,8 +34,7 @@ jobs:
 
     - name: Tag Docker images
       run: |
-        docker tag $(docker images -q frontend) wadeed/fyp_1:frontend
-        docker tag $(docker images -q backend) wadeed/fyp_1:backend
+        ./tag_images.sh $(docker images -q frontend) $(docker images -q backend)
 
   cd:
     runs-on: ubuntu-latest
