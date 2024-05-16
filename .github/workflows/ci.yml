@@ -52,12 +52,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push Docker images to Docker Hub
+    - name: Tag and Push Docker images to Docker Hub
       run: |
-        docker tag fyp_devops_practice_frontend:latest wadeed/fyp_devops_practice_frontend:latest
-        docker tag fyp_devops_practice_backend:latest wadeed/fyp_devops_practice_backend:latest
-        docker push wadeed/fyp_devops_practice_frontend:latest
-        docker push wadeed/fyp_devops_practice_backend:latest
+        # Tag the images
+        docker tag fyp_devops_practice_frontend:latest wadeed/fyp_1:frontend-latest
+        docker tag fyp_devops_practice_backend:latest wadeed/fyp_1:backend-latest
+        
+        # Push the images to Docker Hub
+        docker push wadeed/fyp_1:frontend-latest
+        docker push wadeed/fyp_1:backend-latest
 
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
