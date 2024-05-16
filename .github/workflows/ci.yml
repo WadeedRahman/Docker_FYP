@@ -22,21 +22,15 @@ jobs:
     - name: Build Docker images
       run: docker-compose -f docker-compose.yml build
 
-    - name: Run Docker containers
-      run: docker-compose -f docker-compose.yml up -d
-
     - name: Run frontend tests
       run: |
         # Uncomment the following line to run frontend tests
-        # docker exec docker_fyp_frontend_1 npm test -- --coverage
+        # docker-compose -f docker-compose.yml run frontend npm test -- --coverage
 
     - name: Run backend tests
       run: |
         # Uncomment the following line to run backend tests
-        # docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
-
-    - name: Shut down Docker containers
-      run: docker-compose -f docker-compose.yml down
+        # docker-compose -f docker-compose.yml run backend pytest --rootdir=/app/backend
 
   cd:
     runs-on: ubuntu-latest
@@ -52,15 +46,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Tag and Push Docker images to Docker Hub
+    - name: Tag Docker images
       run: |
-        # Tag the images
-        docker tag frontend:tagname wadeed/fyp_1:frontend-tagname
-        docker tag backend:tagname wadeed/fyp_1:backend-tagname
-        
-        # Push the images to Docker Hub
-        docker push wadeed/fyp_1:frontend-tagname
-        docker push wadeed/fyp_1:backend-tagname
+        docker tag frontend wadeed/fyp_1:frontend
+        docker tag backend wadeed/fyp_1:backend
+
+    - name: Push Docker images to Docker Hub
+      run: |
+        docker push wadeed/fyp_1:frontend
+        docker push wadeed/fyp_1:backend
 
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
