@@ -1,4 +1,4 @@
-name: CI/CD Pipeline 
+name: CI/CD Pipeline
 
 on:
   push:
@@ -43,11 +43,14 @@ jobs:
     needs: build_and_test
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Log in to Docker Hub
-      run: |
-        DOCKER_USERNAME="${{ secrets.DOCKER_USERNAME }}"
-        DOCKER_PASSWORD="${{ secrets.DOCKER_PASSWORD }}"
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
     - name: Push Docker images to Docker Hub
       run: |
