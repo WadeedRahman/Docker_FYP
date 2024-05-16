@@ -16,19 +16,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx (optional for faster builds)
-      uses: docker/setup-buildx-action@v3  # Use if needed
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
     - name: Build Docker images
-      run: docker-compose -f docker-compose.yml build  # Assuming resolved issues
+      run: docker-compose -f docker-compose.yml build
+
+    - name: Run Docker containers
+      run: docker-compose -f docker-compose.yml up -d
 
     - name: Run frontend tests
-      #run: docker-compose -f docker-compose.yml run frontend npm test -- --coverage  # Uncomment if needed
+      run: |
+        # Uncomment the following line to run frontend tests
+        # docker exec docker_fyp_frontend_1 npm test -- --coverage
 
     - name: Run backend tests
-      #run: docker-compose -f docker-compose.yml run backend pytest --rootdir=/app/backend  # Uncomment if needed
+      run: |
+        # Uncomment the following line to run backend tests
+        # docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
 
-  cd:  # Assuming successful build in build_and_test
+    - name: Shut down Docker containers
+      run: docker-compose -f docker-compose.yml down
+
+  cd:
     runs-on: ubuntu-latest
     needs: build_and_test
 
@@ -36,18 +46,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push Docker image (using tags from build_and_test)
-      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-      with:
-        context: ./  # Replace with your build context if different
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/fyp_1:latest  # Or use dynamic tags based on build version
+    - name: Push Docker images to Docker Hub
+      run: |
+        docker push frontend
+        docker push backend
 
     - name: Set up Minikube
       uses: manusa/actions-setup-minikube@v2.5.0
@@ -56,7 +64,7 @@ jobs:
         start: true
         driver: docker
 
-    - name: Deploy to Minikube (assuming deployment.yml and service.yml are ready)
+    - name: Deploy to Minikube
       run: |
         kubectl apply -f k8s/deployment.yml
         kubectl apply -f k8s/service.yml
