@@ -55,6 +55,10 @@ jobs:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image wadeed/fyp_1:v1
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image wadeed/fyp_1:v2
 
+    - name: Start Minikube
+      run: |
+        minikube start --driver=docker
+
     - name: Install kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/v1.23.0/bin/linux/amd64/kubectl"
