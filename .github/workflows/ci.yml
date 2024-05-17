@@ -30,10 +30,10 @@ jobs:
 
     - name: Tag Docker images
       run: |
-        FRONTEND_IMAGE_ID=$(docker images -q docker_fyp_frontend)
-        BACKEND_IMAGE_ID=$(docker images -q docker_fyp_backend)
-        docker tag $FRONTEND_IMAGE_ID wadeed/fyp_1:frontend
-        docker tag $BACKEND_IMAGE_ID wadeed/fyp_1:backend
+        FRONTEND_IMAGE_ID=$(docker-compose -f docker-compose.yml images -q frontend)
+        BACKEND_IMAGE_ID=$(docker-compose -f docker-compose.yml images -q backend)
+        docker tag $FRONTEND_IMAGE_ID wadeed/fyp_1:tagname frontend
+        docker tag $BACKEND_IMAGE_ID wadeed/fyp_1:tagname backend
 
     - name: Run Docker containers
       run: docker-compose -f docker-compose.yml up -d
@@ -41,12 +41,12 @@ jobs:
     - name: Run frontend tests
       run: |
         # Uncomment the following line to run frontend tests
-        # docker exec $(docker ps -q -f name=docker_fyp_frontend_1) npm test -- --coverage
+        # docker exec $(docker ps -q -f name=frontend) npm test -- --coverage
 
     - name: Run backend tests
       run: |
         # Uncomment the following line to run backend tests
-        # docker exec $(docker ps -q -f name=docker_fyp_backend_1) pytest --rootdir=/app/backend
+        # docker exec $(docker ps -q -f name=backend) pytest --rootdir=/app/backend
 
     - name: Shut down Docker containers
       run: docker-compose -f docker-compose.yml down
