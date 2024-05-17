@@ -26,10 +26,12 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker images
+      run: docker-compose -f docker-compose.yml build
+
+    - name: Tag Docker images
       run: |
-        docker-compose -f docker-compose.yml build
-        docker tag docker_fyp_frontend:latest wadeed/fyp_1:frontend
-        docker tag docker_fyp_backend:latest wadeed/fyp_1:backend
+        docker tag $(docker-compose -f docker-compose.yml images -q frontend) wadeed/fyp_1:frontend
+        docker tag $(docker-compose -f docker-compose.yml images -q backend) wadeed/fyp_1:backend
 
     - name: Run Docker containers
       run: docker-compose -f docker-compose.yml up -d
@@ -37,12 +39,12 @@ jobs:
     - name: Run frontend tests
       run: |
         # Uncomment the following line to run frontend tests
-        # docker exec docker_fyp_frontend_1 npm test -- --coverage
+        # docker exec $(docker ps -q -f name=docker_fyp_frontend_1) npm test -- --coverage
 
     - name: Run backend tests
       run: |
         # Uncomment the following line to run backend tests
-        # docker exec docker_fyp_backend_1 pytest --rootdir=/app/backend
+        # docker exec $(docker ps -q -f name=docker_fyp_backend_1) pytest --rootdir=/app/backend
 
     - name: Shut down Docker containers
       run: docker-compose -f docker-compose.yml down
