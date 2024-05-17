@@ -19,7 +19,7 @@ jobs:
     - name: Build Docker images
       run: |
         docker build -t wadeed/fyp_1:v1 React2/myapp
-        docker build -t wadeed/fyp_1:v2 backend
+        docker build -t wadeed/fyp_1:v2 Backend
 
     - name: Run frontend tests
       run: |
