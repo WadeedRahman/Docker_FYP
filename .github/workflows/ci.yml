@@ -31,22 +31,14 @@ jobs:
         # Uncomment the following lines to run backend tests
         # docker run --rm -it wadeed/fyp_1:v2 pytest --rootdir=/app/backend
 
-  security_scan:
-    runs-on: ubuntu-latest
-    needs: build_and_test
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
     - name: Scan Docker images with Trivy
       run: |
-        trivy wadeed/fyp_1:v1
-        trivy wadeed/fyp_1:v2
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy wadeed/fyp_1:v1
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy wadeed/fyp_1:v2
 
   cd:
     runs-on: ubuntu-latest
-    needs: [build_and_test, security_scan]
+    needs: build_and_test
 
     steps:
     - name: Checkout code
