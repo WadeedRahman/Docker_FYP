@@ -57,11 +57,8 @@ jobs:
 
     - name: Install kubectl
       run: |
-        sudo apt-get update && sudo apt-get install -y apt-transport-https
-        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-        sudo apt-get update
-        sudo apt-get install -y kubectl
+        curl -LO "https://dl.k8s.io/release/v1.23.0/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
     - name: Deploy images to Kubernetes
       run: |
