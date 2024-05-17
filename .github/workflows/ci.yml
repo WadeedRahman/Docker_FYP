@@ -30,8 +30,10 @@ jobs:
 
     - name: Tag Docker images
       run: |
-        docker tag $(docker-compose -f docker-compose.yml images -q frontend) wadeed/fyp_1:frontend
-        docker tag $(docker-compose -f docker-compose.yml images -q backend) wadeed/fyp_1:backend
+        FRONTEND_IMAGE_ID=$(docker images -q docker_fyp_frontend)
+        BACKEND_IMAGE_ID=$(docker images -q docker_fyp_backend)
+        docker tag $FRONTEND_IMAGE_ID wadeed/fyp_1:frontend
+        docker tag $BACKEND_IMAGE_ID wadeed/fyp_1:backend
 
     - name: Run Docker containers
       run: docker-compose -f docker-compose.yml up -d
